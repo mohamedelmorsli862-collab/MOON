@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إقليم  قمر</title>
+
+  <style>
+:root {
+    --gold: #ffd700;
+    --gold-glow: rgba(255, 215, 0, 0.8);
+    --purple-dark: #5b2a86;
+    --purple-glow: rgba(91, 42, 134, 0.7);
+    --primary: #3a2f2f;
+    --bg-main: #0b0b0b;
+    --bg-dark: #1a1a1a;
+    --glass: rgba(255,255,255,0.05);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family: 'Cairo', sans-serif;
+    color: var(--primary);
+    background: linear-gradient(180deg, var(--bg-main), var(--bg-dark));
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-top: 80px;
+}
+
+/* ===== خلفية الكون مع نجوم متحركة ===== */
+.universe-bg {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #0b0b0b, #1a1a1a);
+    z-index: -1;
+    overflow: hidden;
+}
+.universe-bg::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:transparent url('https://raw.githubusercontent.com/voodootikigod/logo.js/master/js-logo.png') repeat;
+    animation: starMove 200s linear infinite;
+}
+@keyframes starMove {
+    0% { transform: translateY(0) translateX(0) scale(1);}
+    50% { transform: translateY(-500px) translateX(200px) scale(1.2);}
+    100% { transform: translateY(0) translateX(0) scale(1);}
+}
+
+/* NAV */
+.nav-container {
+    position: fixed; top:0; left:0; width:100%; z-index:999;
+    display:flex; justify-content:center; align-items:center;
+    padding:14px 6%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,215,0,0.2);
+    animation: navDrop 0.9s ease forwards;
+    transform: translateY(-40px);
+    opacity: 0;
+}
+@keyframes navDrop { to { transform: translateY(0); opacity:1;} }
+
+.epic-menu { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+.menu-item {
+    position: relative; padding:12px 20px; font-weight:800; text-decoration:none; border-radius:999px;
+    font-size:13px; background: linear-gradient(135deg, #faff5b, #b5b80d); color:#2a270f;
+    box-shadow:0 6px 16px rgba(91,188,255,0.35); transition: all 0.3s ease;
+    animation: buttonPop 0.6s ease forwards; opacity:0; transform:scale(0.8);
+}
+.menu-item:hover { color:#fff; transform:translateY(-3px) scale(1.05); box-shadow:0 12px 26px rgba(255,215,0,0.6);}
+.menu-item::after {
+    content:""; position:absolute; left:0; bottom:-4px; width:0%; height:2px;
+    background: linear-gradient(90deg,#fff89b,#ffd700); border-radius:10px; transition:0.3s ease;
+}
+.menu-item:hover::after { width:100%; }
+@keyframes buttonPop { to { opacity:1; transform:scale(1); } }
+.menu-item:nth-child(1) { animation-delay:0.2s; }
+.menu-item:nth-child(2) { animation-delay:0.3s; }
+.menu-item:nth-child(3) { animation-delay:0.4s; }
+.menu-item:nth-child(4) { animation-delay:0.5s; }
+
+/* HERO */
+.hero {
+    height:60vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+    background: url('./9amar.jfif') center/cover no-repeat;
+}
+.hero h1 {
+    font-family:'Cinzel', serif;
+    font-size:clamp(2.5rem,8vw,4.2rem);
+    color: var(--gold);
+    text-shadow:0 0 20px var(--gold-glow),0 0 40px rgba(255,215,0,0.6);
+}
+
+/* GRID */
+.legends-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:30px; padding:50px 6%; }
+
+/* CARD */
+.legend-card {
+    position:relative; height:450px; border-radius:22px; overflow:hidden; background:var(--glass); border:1px solid var(--border);
+    transition:0.5s ease; animation: glowPulse 3s infinite alternate;
+}
+@keyframes glowPulse {
+    0% { box-shadow:0 0 15px rgba(255,215,0,0.2);}
+    100% { box-shadow:0 0 35px rgba(255,215,0,0.4);}
+}
+.legend-card:hover { transform:translateY(-10px); }
+
+.card-bg-img {
+    position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(0.45) blur(2px); transition:0.6s;
+}
+.legend-card:hover .card-bg-img { filter:brightness(0.65) blur(0); }
+
+.card-overlay { position:absolute; inset:0; background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.9) 90%); }
+
+.corner-rank {
+    position:absolute; top:18px; right:18px; font-size:12px; padding:5px 14px; border-radius:50px;
+    border:1px solid var(--gold); background:linear-gradient(145deg, rgba(255,215,0,0.25), rgba(0,0,0,0.65));
+    color:var(--gold); font-weight:900; text-shadow:0 0 10px var(--gold-glow);
+    box-shadow:0 0 12px var(--gold-glow), inset 0 0 10px rgba(255,255,255,0.15); z-index:2;
+}
+
+.card-content { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:25px; text-align:right; }
+
+.role {
+    font-size:12px; letter-spacing:3px; font-weight:800;
+    color:#f3eaff; background:linear-gradient(135deg,var(--purple-dark),#2a0f40);
+    padding:6px 14px; border-radius:20px; width: fit-content;
+    box-shadow:0 0 12px var(--purple-glow), inset 0 0 10px rgba(255,255,255,0.15);
+    margin-bottom:12px;
+}
+
+.name {
+    font-size:2.2rem; font-weight:900; color:var(--gold);
+    text-shadow:0 0 10px var(--gold-glow),0 0 25px rgba(255,215,0,0.6);
+    animation: nameGlow 2s infinite alternate;
+}
+@keyframes nameGlow {
+    0% { text-shadow:0 0 10px var(--gold-glow),0 0 25px rgba(255,215,0,0.6); }
+    100% { text-shadow:0 0 15px var(--gold-glow),0 0 35px rgba(255,215,0,0.9); }
+}
+
+.tag {
+    font-size:10px; padding:5px 14px; border-radius:16px;
+    color:#f5ecff; background:linear-gradient(135deg,#4b1f6f,#2a0f40);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 8px var(--purple-glow), inset 0 0 8px rgba(255,255,255,0.1);
+    transition:0.3s ease;
+}
+.tag:hover { transform:translateY(-2px) scale(1.05); box-shadow:0 0 16px var(--purple-glow); }
+
+/* Achievements list */
+.achievements-list { font-size:12px; color:#ccc; line-height:1.7; margin-bottom:15px; max-height:120px; overflow-y:auto; opacity:0; transform:translateY(15px); transition:0.4s; }
+.legend-card:hover .achievements-list { opacity:1; transform:translateY(0); }
+
+/* LIKE BUTTON */
+.like-btn { background: rgba(255,255,255,0.12); border:none; color:#fff; padding:10px 18px; border-radius:12px; cursor:pointer; display:flex; gap:10px; width:fit-content; transition:0.3s; }
+.like-btn:hover, .like-btn.active { background:#c0392b; }
+
+
+/* ===== Developer Badge ===== */
+.developer-badge {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    padding: 8px 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.developer-badge:hover{
+    transform: translateY(-5px) scale(1.05);
+    border-color:#00f2fe;
+    box-shadow:0 5px 15px rgba(0,242,254,0.2);
+    background: rgba(15,23,42,0.9);
+}
+.developer-badge .text { font-size:11px; color:#fff; font-weight:bold; letter-spacing:1.5px; font-family:'Cinzel', serif;}
+.developer-badge .code-icon { color:#00f2fe; font-weight:900; font-family:monospace; font-size:14px; animation: blink 2s infinite;}
+.footer h3 { color: var(--gold); }
+.footer p, .footer a { color:#ccc; font-size:13px; }
+.footer a:hover { color: var(--gold); }
+.footer-bottom { text-align:center; margin-top:30px; padding-top:15px; font-size:12px; color:#888; border-top:1px solid rgba(255,255,255,0.1); }
+/* ===== وميض خفيف لكل كارت ===== */
+.legend-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    animation: cardTwinkle 3s infinite ease-in-out;
+}
+
+@keyframes cardTwinkle {
+    0%, 100% { opacity: 0; transform: scale(0.95); }
+    50% { opacity: 0.25; transform: scale(1.05); }
+}
+
+/* لإضافة اختلاف بسيط بين الكروت */
+.legend-card:nth-child(1)::before { animation-delay: 0s; }
+.legend-card:nth-child(2)::before { animation-delay: 0.5s; }
+.legend-card:nth-child(3)::before { animation-delay: 1s; }
+.legend-card:nth-child(4)::before { animation-delay: 1.5s; }
+.legend-card:nth-child(5)::before { animation-delay: 2s; }
+.legend-card:nth-child(6)::before { animation-delay: 2.5s; }
+
+
+/* ===== دخول سينمائي لجميع العناصر ===== */
+
+/* NAV */
+.nav-container {
+    animation: cinematicNav 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+}
+@keyframes cinematicNav {
+    0% { transform: translateY(-100px) scale(0.8); opacity: 0; }
+    60% { transform: translateY(10px) scale(1.05); opacity: 1; }
+    80% { transform: translateY(-5px) scale(1); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* HERO */
+.hero h1 {
+    animation: cinematicTitle 1.5s ease-out forwards;
+    transform: translateY(50px) scale(0.9);
+    opacity: 0;
+}
+@keyframes cinematicTitle {
+    0% { transform: translateY(50px) scale(0.9); opacity: 0; text-shadow: 0 0 0px #ffd700; }
+    50% { transform: translateY(-10px) scale(1.05); opacity: 1; text-shadow: 0 0 30px #ffd700; }
+    100% { transform: translateY(0) scale(1); text-shadow: 0 0 50px #ffd700; }
+}
+
+/* الكروت */
+.legend-card {
+    transform: translateY(50px) scale(0.8);
+    opacity: 0;
+    animation: cinematicCard 1s cubic-bezier(0.25,1,0.5,1) forwards;
+}
+.legend-card:nth-child(1) { animation-delay: 0.2s; }
+.legend-card:nth-child(2) { animation-delay: 0.4s; }
+.legend-card:nth-child(3) { animation-delay: 0.6s; }
+.legend-card:nth-child(4) { animation-delay: 0.8s; }
+.legend-card:nth-child(5) { animation-delay: 1s; }
+.legend-card:nth-child(6) { animation-delay: 1.2s; }
+
+@keyframes cinematicCard {
+    0% { transform: translateY(50px) scale(0.8); opacity: 0; box-shadow: 0 0 0 rgba(255,215,0,0); }
+    50% { transform: translateY(-10px) scale(1.05); opacity: 1; box-shadow: 0 20px 50px rgba(255,215,0,0.3); }
+    80% { transform: translateY(0) scale(1); box-shadow: 0 10px 30px rgba(255,215,0,0.2); }
+    100% { transform: translateY(0) scale(1); box-shadow: 0 15px 35px rgba(255,215,0,0.25); }
+}
+
+/* الأزرار */
+.menu-item {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+    animation: cinematicButton 0.8s ease-out forwards;
+}
+.menu-item:nth-child(1) { animation-delay: 0.3s; }
+.menu-item:nth-child(2) { animation-delay: 0.5s; }
+.menu-item:nth-child(3) { animation-delay: 0.7s; }
+.menu-item:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes cinematicButton {
+    0% { transform: translateY(20px) scale(0.8); opacity: 0; }
+    60% { transform: translateY(-5px) scale(1.05); opacity: 1; }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* تأثير إضافي للوميض على الكروت عند دخولها */
+.legend-card::before {
+    animation: cinematicTwinkle 1.5s ease-in-out forwards;
+}
+@keyframes cinematicTwinkle {
+    0% { opacity: 0; transform: scale(0.9); }
+    50% { opacity: 0.3; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(1); }
+}
+/* الكروت */
+.legend-card {
+    transform: translateY(50px) scale(0.8);
+    opacity: 0;
+    animation: cinematicCard 1s cubic-bezier(0.25,1,0.5,1) forwards; /* forwards = يبقاو */
+}
+.legend-card:nth-child(1) { animation-delay: 0.2s; }
+.legend-card:nth-child(2) { animation-delay: 0.4s; }
+.legend-card:nth-child(3) { animation-delay: 0.6s; }
+.legend-card:nth-child(4) { animation-delay: 0.8s; }
+.legend-card:nth-child(5) { animation-delay: 1s; }
+.legend-card:nth-child(6) { animation-delay: 1.2s; }
+
+@keyframes cinematicCard {
+    0% { transform: translateY(50px) scale(0.8); opacity: 0; box-shadow: 0 0 0 rgba(255,215,0,0); }
+    50% { transform: translateY(-10px) scale(1.05); opacity: 1; box-shadow: 0 20px 50px rgba(255,215,0,0.3); }
+    80% { transform: translateY(0) scale(1); box-shadow: 0 10px 30px rgba(255,215,0,0.2); }
+    100% { transform: translateY(0) scale(1); opacity: 1; box-shadow: 0 15px 35px rgba(255,215,0,0.25); } /* opacity = 1 هنا */
+}
+/* ===== HERO TITLE ===== */
+.hero h1 {
+    transform: translateY(50px) scale(0.9);
+    opacity: 0;
+    animation: cinematicTitle 1.5s ease-out forwards; /* forwards = يبقاو ظاهرين */
+}
+@keyframes cinematicTitle {
+    0% { transform: translateY(50px) scale(0.9); opacity: 0; text-shadow: 0 0 0px #ffd700; }
+    50% { transform: translateY(-10px) scale(1.05); opacity: 1; text-shadow: 0 0 30px #ffd700; }
+    100% { transform: translateY(0) scale(1); opacity: 1; text-shadow: 0 0 50px #ffd700; } /* يبقاو ظاهرين */
+}
+
+/* ===== NAV BUTTONS ===== */
+.menu-item {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+    animation: cinematicButton 0.8s ease-out forwards; /* forwards = يبقاو ظاهرين */
+}
+.menu-item:nth-child(1) { animation-delay: 0.3s; }
+.menu-item:nth-child(2) { animation-delay: 0.5s; }
+.menu-item:nth-child(3) { animation-delay: 0.7s; }
+.menu-item:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes cinematicButton {
+    0% { transform: translateY(20px) scale(0.8); opacity: 0; }
+    60% { transform: translateY(-5px) scale(1.05); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; } /* يبقاو ظاهرين */
+}
+/* ===== NAV CINEMATIC ===== */
+.nav-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 6%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,215,0,0.2);
+
+    /* التحريك السينمائي */
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+    animation: cinematicNav 1s cubic-bezier(0.25,1,0.5,1) forwards; /* forwards = يبقا ظاهر */
+}
+
+@keyframes cinematicNav {
+    0%   { transform: translateY(-100px) scale(0.8); opacity: 0; }
+    60%  { transform: translateY(10px) scale(1.05); opacity: 1; }
+    80%  { transform: translateY(-5px) scale(1); }
+    100% { transform: translateY(0) scale(1); opacity: 1; } /* يبقا ظاهر */
+}
+
+
+</style>
+
+</head>
+
+<body>
+<div class="universe-bg"></div>
+
+<nav class="nav-container">
+    <div style="font-weight:900;">MOON 🌙</div>
+    <div class="epic-menu">
+        <a href="#rotab" class="menu-item">الرتب الملكية</a>
+        <a href="#do9" class="menu-item">الدوقات</a>
+        <a href="./na9aba4.html" class="menu-item">النقابات</a>
+        <a href="./developer.html" class="menu-item">المطوّر الأعلى</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <h1>إقليم قمر</h1>
+    <p style="opacity:0.7; letter-spacing:2px">WELCOME TO MOON</p>
+</header>
+
+    
+<section class="legends-grid" id="rotab">
+    
+ <h2 style="font-size: 2rem; border-right: 5px solid var(--gold); padding-right: 15px; display: inline-block; text-align: center;">
+            الرتب الملكية</h2>
+     <article class="legend-card">
+        <div class="card-bg-img" style="background-image:url('./danyal.jfif')"></div>
+        <div class="card-overlay"></div>
+        <div class="corner-rank">LEGEND</div>
+
+        <div class="card-content">
+            <h1 class="role"> ملك</h1>
+            <h2 class="name">دانيال</h2>
+
+            <div class="tags">
+                <span class="tag">اداري   </span>
+                <span class="tag">نـاشـر   </span>
+            </div>
+
+            <div class="achievements-list">
+
+الملك الوحيد اللذي بدا مسيرته بدون مشرفين و هو شخص خبير و افضل الرتب العليا في اريفانيا            </div>
+
+            <button class="like-btn" onclick="toggleLike(this,'danyal')">
+                ❤️ <span class="count">0</span>
+            </button>
+        </div>
+    </article>
+
+    
+
+    
+
+    <h2 style="font-size: 2rem; border-right: 5px solid var(--gold); padding-right: 15px; display: inline-block; text-align: center;" id="do9">
+             الدوقات</h2>
+
+          <article class="legend-card">
+        <div class="card-bg-img" style="background-image:url('./livai\,jfif.jpeg')"></div>
+        <div class="card-overlay"></div>
+        <div class="corner-rank">LEGEND</div>
+
+        <div class="card-content">
+            <h1 class="role"> دوق  </h1>
+            <h2 class="name">ليفاي </h2>
+
+            <div class="tags">
+                <span class="tag">خبير  </span>
+                <span class="tag">اداري </span>
+            </div>
+
+            <div class="achievements-list">
+من الأشخاص اللي ما استسلم وقت كانت نقابته على بعد نقطة من التصفية ف خبرته الواسعة خلاها من اقوى النقابات في الاقليم ف الوقت الذي توقع الكل سقوطها            </div>
+
+            <button class="like-btn" onclick="toggleLike(this,'livai')">
+                ❤️ <span class="count">0</span>
+            </button>
+        </div>
+    </article>
+
+     
+
+     <article class="legend-card">
+        <div class="card-bg-img" style="background-image:url('./jims.jfif')"></div>
+        <div class="card-overlay"></div>
+        <div class="corner-rank">LEGEND</div>
+
+        <div class="card-content">
+            <h1 class="role"> دوق </h1>
+            <h2 class="name">جيمس لي</h2>
+
+            <div class="tags">
+                <span class="tag">ناشر  </span>
+                <span class="tag">اداري  </span>
+            </div>
+
+            <div class="achievements-list">
+من الأشخاص الحديثين في عالم النقابات اللي ابرز نفسه في فترة وجيزة و من افضل الرتب ادارة في الاقليم            </div>
+
+            <button class="like-btn" onclick="toggleLike(this,'jums')">
+                ❤️ <span class="count">0</span>
+            </button>
+        </div>
+    </article>
+   
+</section>
+
+<a href="#" class="developer-badge">
+  <span class="text">𝑲𝒂𝒊𝒓𝒐 – 𝑻𝒐𝒋𝒊 ⛧</span>
+  <span class="code-icon">&lt;/&gt;</span>
+</a>
+
+<footer class="footer">
+    <div class="footer-content">
+
+        <div>
+            <h3>إقليم قمر</h3>
+            <p>
+                إقليم أسطوري يجمع بين القوة، الحكمة، والتنظيم.
+                بُني على الولاء، الإدارة، وصناعة المجد.
+            </p>
+        </div>
+
+        <div>
+            <h3>التنقّل</h3>
+            <a href="#rotab">الرتب الملكية</a><br>
+            <a href="#do9">الدوقات</a><br>
+            <a href="./na9aba4.html">النقابات</a><br>
+        <a href="./index.html">رجوع إلى المملكة </a>
+        </div>
+
+        <div>
+            <h3>الحالة</h3>
+            <p>🛡️ الإقليم: مستقر</p>
+            <p>⚔️ القوة: مرتفعة</p>
+            <p>📜 القوانين: مُفعّلة</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 — MOON | All Rights Reserved
+    </div>
+</footer>
+
+
+<script>
+ 
+function toggleLike(btn, id) {
+    let likes = JSON.parse(localStorage.getItem('legend_likes') || '{}');
+    likes[id] = (likes[id] || 0) + 1;
+    localStorage.setItem('legend_likes', JSON.stringify(likes));
+    btn.querySelector('.count').innerText = likes[id];
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
