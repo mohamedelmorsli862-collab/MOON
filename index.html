@@ -509,7 +509,63 @@ body {
     transform:translateY(0);
   }
 }
+.floating-kingdom {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  padding: 12px 20px;
+  border-radius: 30px;
 
+  background: linear-gradient(145deg, #fafe00, #af921e);
+  color: #020617;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  box-shadow:
+    0 0 25px rgba(254, 241, 0, 0.45),
+    inset 0 0 10px rgba(255,255,255,0.2);
+
+  border: 1px solid rgba(255,255,255,0.3);
+  z-index: 9999;
+
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover effect */
+.floating-kingdom:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow:
+    0 0 35px rgba(254, 241, 0, 0.45),
+    inset 0 0 15px rgba(255,255,255,0.25);
+}
+
+/* Animation خفيفة */
+.floating-kingdom {
+  animation: kingdomPulse 2.5s infinite;
+}
+
+@keyframes kingdomPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .floating-kingdom {
+    bottom: 15px;
+    right: 15px;
+    left: auto;
+    transform: none;
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+}
 
 </style>
 
@@ -532,6 +588,9 @@ body {
     <h1>إقليم قمر</h1>
     <p style="opacity:0.7; letter-spacing:2px ;color: #f8cf00;">WELCOME TO MOON</p>
 </header>
+<a href="https://chat.whatsapp.com/CDUMJp4Jgyo6ElK2dQQES1?mode=gi_t" class="floating-kingdom">
+صحيفة الاقليم
+</a>
 <section class="capital-card">
   <div class="capital-image" style="background-image:url('./ati.jfif')"></div>
 
