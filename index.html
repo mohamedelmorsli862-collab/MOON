@@ -87,7 +87,7 @@ body {
 /* HERO */
 .hero {
     height:60vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-    background: url('./9amar.jfif') center/cover no-repeat;
+    background: url('./moon1.jfif') center/cover no-repeat;
 }
 .hero h1 {
     font-family:'Cinzel', serif;
@@ -365,6 +365,150 @@ body {
     80%  { transform: translateY(-5px) scale(1); }
     100% { transform: translateY(0) scale(1); opacity: 1; } /* يبقا ظاهر */
 }
+.capital-section{
+  display:flex;
+  justify-content:center;
+  margin:50px 0 70px;
+}
+
+.capital-core{
+  text-align:center;
+  padding:25px 50px;
+  border-radius:22px;
+  background:rgba(124,200,255,0.08);
+  border:1px solid rgba(124,200,255,0.35);
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 40px rgba(124,200,255,0.35);
+  animation: capitalAppear 1.2s ease forwards;
+}
+
+.capital-label{
+  font-size:13px;
+  letter-spacing:2px;
+  opacity:0.8;
+}
+
+.capital-name{
+  margin:10px 0;
+  font-size:clamp(26px,6vw,42px);
+  color:var(--gold);
+  text-shadow:0 0 25px rgba(212,175,55,.8);
+}
+
+.capital-desc{
+  font-size:14px;
+  opacity:0.85;
+  letter-spacing:1px;
+}
+
+@keyframes capitalAppear{
+  from{
+    opacity:0;
+    transform:translateY(30px) scale(.95);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+.capital-card{
+  position:relative;
+  width:340px;
+  height:420px;
+  border-radius:24px;
+  overflow:hidden;
+  margin:60px auto;
+  box-shadow:
+    0 0 40px rgba(124,200,255,.45),
+    inset 0 0 30px rgba(255,255,255,.08);
+  animation: capitalFloat 6s ease-in-out infinite;
+}
+
+/* الصورة */
+.capital-image{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  filter:brightness(.65) contrast(1.1);
+  transform:scale(1.15);
+  animation: slowZoom 12s ease-in-out infinite;
+}
+
+/* طبقة التعتيم */
+.capital-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.85),
+      rgba(0,0,0,.25),
+      transparent
+    );
+}
+
+/* النص */
+.capital-text{
+  position:absolute;
+  bottom:30px;
+  right:0;
+  left:0;
+  text-align:center;
+  z-index:2;
+  color:#fff;
+  animation: textReveal 1.6s ease forwards;
+}
+
+.capital-tag{
+  display:inline-block;
+  font-size:12px;
+  letter-spacing:2px;
+  padding:6px 14px;
+  border-radius:20px;
+  background:rgba(212,175,55,.25);
+  color:#f5e7b0;
+  border:1px solid rgba(212,175,55,.6);
+  margin-bottom:10px;
+}
+
+.capital-title{
+  font-size:28px;
+  font-weight:900;
+  color:#d4af37;
+  text-shadow:
+    0 0 15px rgba(212,175,55,.8),
+    0 0 35px rgba(212,175,55,.6);
+}
+
+.capital-sub{
+  font-size:13px;
+  opacity:.85;
+  letter-spacing:1px;
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes slowZoom{
+  0%,100%{transform:scale(1.15);}
+  50%{transform:scale(1.25);}
+}
+
+@keyframes capitalFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+@keyframes textReveal{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
 
 
 </style>
@@ -386,8 +530,21 @@ body {
 
 <header class="hero">
     <h1>إقليم قمر</h1>
-    <p style="opacity:0.7; letter-spacing:2px">WELCOME TO MOON</p>
+    <p style="opacity:0.7; letter-spacing:2px ;color: #f8cf00;">WELCOME TO MOON</p>
 </header>
+<section class="capital-card">
+  <div class="capital-image" style="background-image:url('./ati.jfif')"></div>
+
+  <div class="capital-overlay"></div>
+
+  <div class="capital-text">
+    <span class="capital-tag">🏛️ عاصمة الإقليم</span>
+    <h2 class="capital-title"> دريفت 🎻</h2>
+    <p class="capital-sub">قلب النظام • مركز القرار</p>
+  </div>
+</section>
+
+
 
     
 <section class="legends-grid" id="rotab">
