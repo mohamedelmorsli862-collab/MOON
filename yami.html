@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>نقابات لويد | MOON</title>
+<title>نقابات يامي | MOON</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root { --gold:#d4af37; --gold-glow:rgba(212,175,55,0.7); --purple:#7a3cf5; --cyan:#00f2fe; --cyan-glow:rgba(0,242,254,0.4); --bg-deep:#030108; --glass-border:rgba(255,255,255,0.08); --text:#e8e0f0; --text-dim:#9a8fb8; }
@@ -46,17 +46,17 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <a href="index.html" class="nav-brand"><span class="moon-icon">🌙</span> MOON</a>
     <a href="index.html" class="nav-link">⬅ رجوع إلى المملكة</a>
 </nav>
-<h2 class="page-title">🐺 نقابات لويد</h2>
+<h2 class="page-title">🗡️ نقابات يامي</h2>
 <div class="cards">
-    <div class="card" style="--bg:url('./main.jfif')"><span class="rank">ماين</span><h3>سـتـارك</h3><span class="icon">🐺</span></div>
-    <div class="card" style="--bg:url('./luffy.jfif')"><span class="rank">لوفي</span><h3>فـيـنـلانـد</h3><span class="icon">🍁</span></div>
+    <div class="card" style="--bg:url('./shaghr2.jfif')"><span class="rank">شاغر</span><h3>ريفا</h3><span class="icon">🏹</span></div>
+    <div class="card" style="--bg:url('./arima.jfif')"><span class="rank">اريما</span><h3>بــلاك</h3><span class="icon">⚫</span></div>
 </div>
 <div class="falling-icons" id="fallingIcons"></div>
 <script>
 (function(){const c=document.getElementById('stars-canvas'),ctx=c.getContext('2d');let w,h,stars=[];const N=innerWidth<768?80:160;function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}function create(){stars=[];for(let i=0;i<N;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+0.3,speed:Math.random()*0.3+0.05,phase:Math.random()*Math.PI*2});}function draw(t){ctx.clearRect(0,0,w,h);stars.forEach(s=>{s.y-=s.speed;if(s.y<-5){s.y=h+5;s.x=Math.random()*w;}const tw=0.5+0.5*Math.sin(t*0.002+s.phase);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${tw*0.7})`;ctx.fill();});requestAnimationFrame(draw);}addEventListener('resize',()=>{resize();create();});resize();create();requestAnimationFrame(draw);})();
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
 document.querySelectorAll('.card').forEach(el=>obs.observe(el));
-const icons=["🐺","🍁","⚔️","🏹"];const container=document.getElementById("fallingIcons");const n=innerWidth<768?18:30;
+const icons=["🏹","⚫","🗡️","⚔️"];const container=document.getElementById("fallingIcons");const n=innerWidth<768?18:30;
 for(let i=0;i<n;i++){const s=document.createElement("span");s.textContent=icons[Math.floor(Math.random()*icons.length)];s.style.left=Math.random()*100+"vw";s.style.animationDuration=(Math.random()*5+6)+"s";s.style.fontSize=(Math.random()*18+12)+"px";s.style.animationDelay=(Math.random()*8)+"s";container.appendChild(s);}
 if(innerWidth>768){document.querySelectorAll('.card').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-0.5)*10;const y=((e.clientY-r.top)/r.height-0.5)*-10;card.style.transform=`translateY(-12px) scale(1.03) rotateY(${x}deg) rotateX(${y}deg)`;});card.addEventListener('mouseleave',()=>{card.style.transform='';});});}
 document.querySelectorAll('.card').forEach(card=>{card.addEventListener('touchstart',function(){document.querySelectorAll('.card.touched').forEach(c=>{if(c!==this)c.classList.remove('touched');});this.classList.toggle('touched');},{passive:true});});

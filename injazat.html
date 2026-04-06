@@ -1,221 +1,56 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>إنجازات الاقليم</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>إنجازات الإقليم | MOON</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Tahoma;
-}
+:root { --gold:#d4af37; --gold-glow:rgba(212,175,55,0.7); --purple:#7a3cf5; --cyan:#00f2fe; --bg-deep:#030108; --glass-border:rgba(255,255,255,0.08); --text:#e8e0f0; --text-dim:#9a8fb8; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Cairo',sans-serif;color:var(--text);background:var(--bg-deep);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-x:hidden;padding:30px 15px;}
+#stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 30% 20%,rgba(122,60,245,0.1),transparent),radial-gradient(ellipse 60% 50% at 70% 80%,rgba(0,242,254,0.06),transparent);}
 
-body{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow-x:hidden;
-  background:radial-gradient(circle at bottom,#1b2735 0%,#090a0f 100%);
-  color:white;
-}
+.moon{position:fixed;top:6%;right:5%;width:min(100px,18vw);height:min(100px,18vw);background:radial-gradient(circle at 30% 30%,#fffdd0,#f0e68c);border-radius:50%;box-shadow:0 0 40px rgba(255,253,208,0.6),0 0 80px rgba(255,253,208,0.3);z-index:1;animation:moonP 4s ease-in-out infinite;}
+@keyframes moonP{0%,100%{box-shadow:0 0 40px rgba(255,253,208,0.6),0 0 80px rgba(255,253,208,0.3);}50%{box-shadow:0 0 60px rgba(255,253,208,0.8),0 0 120px rgba(255,253,208,0.4);}}
 
-/* Navbar */
+.story{position:relative;z-index:2;width:min(90%,750px);padding:clamp(25px,5vw,50px) clamp(20px,4vw,40px);border-radius:28px;background:rgba(12,8,24,0.65);backdrop-filter:blur(20px);border:1px solid var(--glass-border);box-shadow:0 0 40px rgba(122,60,245,0.2),0 30px 80px rgba(0,0,0,0.6);animation:cardEnter 1.2s ease forwards;opacity:0;transform:translateY(40px) scale(0.95);}
+.story::before{content:"";position:absolute;inset:-1px;border-radius:inherit;background:conic-gradient(from 0deg,transparent,var(--gold),transparent,var(--purple),transparent);opacity:0.3;filter:blur(3px);z-index:-1;}
+@keyframes cardEnter{to{opacity:1;transform:translateY(0) scale(1);}}
 
+.story h1{font-family:'Cinzel Decorative',serif;text-align:center;margin-bottom:30px;font-size:clamp(20px,5vw,32px);color:var(--gold);text-shadow:0 0 25px var(--gold-glow);}
 
-/* القمر */
-.moon{
-  position: fixed; /* يبقى مع الخلفية */
-  top: 10%;
-  right: 5%;
-  width: 120px;
-  height: 120px;
-  background:#fffdd0;
-  border-radius:50%;
-  box-shadow:
-    0 0 40px #fff,
-    0 0 80px #fff,
-    0 0 120px #fff;
-  z-index:0; /* تحت كلشي */
-}
+.achievement{padding:clamp(12px,3vw,18px) clamp(14px,3vw,20px);margin:12px 0;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);font-size:clamp(14px,3vw,16px);line-height:1.8;opacity:0;transform:translateX(40px);animation:achieveSlide .8s ease forwards;transition:all .4s cubic-bezier(.25,1,.5,1);-webkit-tap-highlight-color:transparent;}
+.achievement:nth-child(2){animation-delay:.3s;}.achievement:nth-child(3){animation-delay:.6s;}.achievement:nth-child(4){animation-delay:.9s;}.achievement:nth-child(5){animation-delay:1.2s;}.achievement:nth-child(6){animation-delay:1.5s;}
+@keyframes achieveSlide{to{opacity:1;transform:translateX(0);}}
+.achievement:hover,.achievement:active{background:rgba(212,175,55,0.08);border-color:rgba(212,175,55,0.2);transform:translateX(-4px) scale(1.01);box-shadow:0 0 20px rgba(212,175,55,0.12);}
+.achievement span{filter:drop-shadow(0 0 8px rgba(255,255,255,0.5));}
 
-/* النجوم */
-.stars{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:transparent;
-}
+.back{display:inline-block;margin-top:25px;padding:12px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:clamp(13px,3vw,15px);color:#030108;background:linear-gradient(135deg,var(--gold),#c9920e);box-shadow:0 0 20px rgba(212,175,55,0.4);transition:all .4s;position:relative;z-index:2;}
+.back:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 0 40px rgba(212,175,55,0.6);}
 
-.star{
-  position:absolute;
-  width:3px;
-  height:3px;
-  background:white;
-  border-radius:50%;
-  animation:moveStars 10s linear infinite, twinkle 2s infinite;
-}
-
-@keyframes moveStars{
-  from{transform:translateY(0)}
-  to{transform:translateY(-100vh)}
-}
-
-@keyframes twinkle{
-  0%{opacity:0.2}
-  50%{opacity:1}
-  100%{opacity:0.2}
-}
-
-/* كارت الإنجازات */
-.story{
-  position: relative;
-  z-index:2; /* فوق القمر */
-  width:90%;
-  max-width:750px;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(12px);
-  padding:40px;
-  border-radius:25px;
-  box-shadow:
-    0 0 25px rgba(255,255,255,0.2),
-    0 0 60px rgba(100,80,255,0.6);
-}
-
-.story h1{
-  text-align:center;
-  margin-bottom:30px;
-  font-size:32px;
-  text-shadow:0 0 15px #aaa;
-}
-
-/* الإنجازات */
-.achievement{
-  padding:15px;
-  margin:12px 0;
-  border-radius:14px;
-  background:rgba(255,255,255,0.05);
-  font-size:20px;
-  opacity:0;
-  transform:translateY(30px);
-  animation:show 1s forwards;
-}
-
-.achievement:nth-child(2){animation-delay:0.5s;}
-.achievement:nth-child(3){animation-delay:1s;}
-.achievement:nth-child(4){animation-delay:1.5s;}
-.achievement:nth-child(5){animation-delay:2s;}
-.achievement:nth-child(6){animation-delay:2.5s;}
-
-.achievement:hover{
-  transform:scale(1.05);
-  background:rgba(255,255,255,0.15);
-  box-shadow:0 0 20px #aaa;
-}
-
-/* Glow للأيقونات */
-.achievement span{
-  filter:drop-shadow(0 0 6px #fff);
-}
-
-/* animation الإنجازات */
-@keyframes show{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width:768px){
-  .moon{
-    top:5%;
-    right:5%;
-    width:70px;
-    height:70px;
-  }
-  .story{
-    width:95%;
-    padding:25px;
-  }
-  .story h1{
-    font-size:26px;
-  }
-  .achievement{
-    font-size:18px;
-  }
-}
-/* القمر فوق الكارت */
-.moon{
-  position: absolute; /* بدل fixed باش يجي فوق الكارت */
-  top: 0px; /* يطلع فوق الكارت */
-  right: 20px;
-  width: 100px;
-  height: 100px;
-   background:#fffdd0;
-  border-radius:50%;
-  box-shadow:
-    0 0 40px #fff,
-    0 0 80px #fff,
-    0 0 120px #fff;
-  z-index:3;
-}
-
-/* Button العودة – تصميم خرافي */
-.back{
-  display:inline-block;
-  margin-top:25px;
-  padding:12px 30px;
-  border-radius:30px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:clamp(14px,4vw,18px);
-  background: linear-gradient(45deg,#ffd700,#ffae00);
-  color:#000;
-  box-shadow:0 0 10px #ffd700,0 0 20px #ffae00;
-  transition:0.4s;
-}
-
-.back:hover{
-  transform:scale(1.05) rotate(-2deg);
-  box-shadow:0 0 20px #fffdd0,0 0 40px #ffd700;
+@media(max-width:480px){
+    .moon{top:3%;right:3%;width:60px;height:60px;}
+    .story{width:95%;padding:20px 16px;}
+    .achievement{padding:12px 14px;font-size:14px;margin:10px 0;}
 }
 </style>
 </head>
-
 <body>
-<!-- Navbar -->
-
-
-<!-- القمر -->
+<canvas id="stars-canvas"></canvas>
 <div class="moon"></div>
-
-<!-- النجوم -->
-<div class="stars">
-  <div class="star" style="top:10%;left:20%"></div>
-  <div class="star" style="top:30%;left:70%"></div>
-  <div class="star" style="top:50%;left:10%"></div>
-  <div class="star" style="top:80%;left:60%"></div>
-  <div class="star" style="top:20%;left:50%"></div>
-  <div class="star" style="top:60%;left:40%"></div>
-  <div class="star" style="top:75%;left:25%"></div>
-</div>
-
-<!-- كارت الإنجازات -->
 <div class="story">
-<h1>إنجازات الاقليم 🌙</h1>
-
-<div class="achievement">❍ <span>9</span> نقابات نشطة</div>
-<div class="achievement">❍ فوز دريفت <span>🎻</span> بالمركز الثالث في بطولة صراع نشر أريفانيا <span>🪽</span></div>
-<div class="achievement">❍ تأهل <span>6</span> نقابات من الإقليم للدور الثاني من بطولة حرب أريفانيا <span>🪽</span></div>
-<div class="achievement">❍ فوز وانو <span>🎋</span> بأنظف تفاعل ببطولة حرب أريفانيا <span>🪽</span></div>
-<div class="achievement">❍ فوز دريفت <span>🎻</span> بأكثر نقابة متفاعلة ببطولة حرب أريفانيا <span>🪽</span></div>
-
-<a href="index.html" class="back">⬅ الرجوع الاقليم</a>
+    <h1>🌙 إنجازات الاقليم</h1>
+    <div class="achievement">❍ <span>9</span> نقابات نشطة</div>
+    <div class="achievement">❍ فوز دريفت <span>🎻</span> بالمركز الثالث في بطولة صراع نشر أريفانيا <span>🪽</span></div>
+    <div class="achievement">❍ تأهل <span>6</span> نقابات من الإقليم للدور الثاني من بطولة حرب أريفانيا <span>🪽</span></div>
+    <div class="achievement">❍ فوز وانو <span>🎋</span> بأنظف تفاعل ببطولة حرب أريفانيا <span>🪽</span></div>
+    <div class="achievement">❍ فوز دريفت <span>🎻</span> بأكثر نقابة متفاعلة ببطولة حرب أريفانيا <span>🪽</span></div>
+    <a href="index.html" class="back">⬅ الرجوع الاقليم</a>
 </div>
-
-
+<script>
+(function(){const c=document.getElementById('stars-canvas'),ctx=c.getContext('2d');let w,h,stars=[];const N=innerWidth<768?80:150;function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}function create(){stars=[];for(let i=0;i<N;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+0.3,speed:Math.random()*0.2+0.03,phase:Math.random()*Math.PI*2});}function draw(t){ctx.clearRect(0,0,w,h);stars.forEach(s=>{s.y-=s.speed;if(s.y<-5){s.y=h+5;s.x=Math.random()*w;}const tw=0.5+0.5*Math.sin(t*0.002+s.phase);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${tw*0.7})`;ctx.fill();});requestAnimationFrame(draw);}addEventListener('resize',()=>{resize();create();});resize();create();requestAnimationFrame(draw);})();
+</script>
 </body>
 </html>
